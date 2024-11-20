@@ -11,9 +11,9 @@ from pages.sandbox_page import SandboxPage
 
 def pytest_addoption(parser):
   parser.addoption(
-    "--browser", 
-      action="store", 
-      default="chrome", 
+    "--browser",
+      action="store",
+      default="chrome",
       help="Type of browser: chrome, firefox, edge, safari"
   )
 
@@ -23,7 +23,7 @@ def browser(request):
   if browser_type == 'chrome':
     service = ChromeService(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
-    driver.maximize_window()    
+    driver.maximize_window()
   elif browser_type == 'firefox':
     service = FirefoxService(GeckoDriverManager().install())
     driver = webdriver.Firefox(service=service)
@@ -32,10 +32,11 @@ def browser(request):
     service = EdgeService(EdgeChromiumDriverManager().install())
     driver = webdriver.Edge(service=service)
   elif browser_type == 'safari':
-    driver = webdriver.Safari()
+    options = webdriver.SafariOptions()
+    driver = webdriver.Safari(options=options)
   else:
     raise ValueError(f"Browser '{browser_type}' no esta soportado.")
-  
+
   yield driver
   driver.quit()
 
